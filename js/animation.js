@@ -30,13 +30,13 @@ function Robot(){
     this.draw = function(ctx) {
       if(this.destY > this.y) {
         this.y += this.speed;  
-      } else if(this.destY < this.y) {
+      }else if(this.destY < this.y) {
         this.y -= this.speed;  
       } 
 
       if(this.destX > this.x) {
         this.x += this.speed;  
-      } else if(this.destX < this.x) {
+      }else if(this.destX < this.x) {
         this.x -= this.speed;  
       }
       ctx.fillStyle= this.color;
