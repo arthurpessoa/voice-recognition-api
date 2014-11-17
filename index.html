@@ -1,35 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <title>Artificial Linguistic</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- JQuery -->
     <script src="js/jquery.min.js"></script>
-    <script src="js/annyang.js"></script>
-    <script>
-    if (annyang) {
-      // Let's define a command.
+
+    <!-- Interface -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.min.js"></script> 
 
 
-      var commands = {
-        'hello': function() { alert('Hello world!'); }
-      };
-
-      // Add our commands to annyang
-      annyang.addCommands(commands);
-
-      // Start listening.
-      annyang.start();
-            alert('fail');
-    }
-    </script>
   </head>
   <body>
-    <h1>Hello, world!</h1>
+  	<canvas id="mainCanvas"></canvas>    
+  	<!-- Lingüistica -->
+    <script src="js/reconhecimento.js"></script>
+    <script src="js/animation.js"></script>
+    <script src="js/commands.js"></script>
     
-    <script src="js/bootstrap.min.js"></script>
   </body>
 </html>

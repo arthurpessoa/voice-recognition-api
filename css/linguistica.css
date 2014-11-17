@@ -1,0 +1,9 @@
+html, body {
+	background: whiteSmoke;
+}
+
+canvas {
+	display: block;
+	background: white;
+	margin: 20px auto;
+}
