@@ -17,9 +17,7 @@ if (voz) {
       voz.abort();
       
     }
-
   };
-
   	// Add our commands to voz
 	 voz.addCommands(commands);
 
@@ -29,6 +27,4 @@ if (voz) {
 	window.onbeforeunload = function (event) {
 	    voz.abort();
 	};
-
-
 }

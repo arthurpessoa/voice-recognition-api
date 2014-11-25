@@ -55,7 +55,6 @@ robot.setColor("#FF0000");
 robot.setPosition(200,200);
 
 
-
 //----------------------------------------
 //  Animação HTML 5 (Simulação)
 //----------------------------------------
@@ -67,6 +66,16 @@ ctx.canvas.height = window.innerHeight - 10;
 
 function draw() {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.font="11px Georgia";
+  ctx.fillStyle = 'black';
+  var i;
+  for(i = 50; i < ctx.canvas.width; i+=50) {
+    ctx.fillText(i + "x" , i ,50);
+  }
+
+  for(i = 50; i < ctx.canvas.width; i+=50) {
+    ctx.fillText(i + "y" , 50 ,i);
+  }
   robot.draw(ctx);
 }
 
