@@ -44,6 +44,13 @@ function Robot(){
       }else if(this.destX < this.x) {
         this.x -= this.speed;  
       }
+
+      ctx.beginPath();
+      ctx.moveTo(this.x + 25, this.y + 25);
+      ctx.lineTo(this.destX, this.destY);
+      ctx.stroke();
+
+
       ctx.fillStyle= this.color;
       ctx.fillRect(this.x, this.y, this.width, this.height);
     };
