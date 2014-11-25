@@ -1,3 +1,8 @@
+/*
+* Arthur Pessoa de Souza
+*/
+
+
 //---------------------------
 // Robô
 //---------------------------
@@ -48,6 +53,8 @@ function Robot(){
 robot = new Robot();
 robot.setColor("#FF0000");
 robot.setPosition(200,200);
+
+
 
 //----------------------------------------
 //  Animação HTML 5 (Simulação)

@@ -1,18 +1,15 @@
 (function (undefined) {
   "use strict";
   
-  // Save a reference to the global object (window in the browser)
   var root = this;
 
-  // Get the SpeechRecognition object, while handling browser prefixes
+ 
   var SpeechRecognition = root.SpeechRecognition ||
                           root.webkitSpeechRecognition ||
                           root.mozSpeechRecognition ||
                           root.msSpeechRecognition ||
                           root.oSpeechRecognition;
 
-  // Check browser support
-  // This is done as early as possible, to make it as fast as possible for unsupported browsers
   if (!SpeechRecognition) {
     root.voz = null;
     return undefined;
@@ -26,7 +23,6 @@
   var debugState = false;
   var debugStyle = 'font-weight: bold; color: #00f;';
 
-  // The command matching code is a modified version of Backbone.Router by Jeremy Ashkenas, under the MIT license.
   var optionalParam = /\s*\((.*?)\)\s*/g;
   var optionalRegex = /(\(\?:[^)]+\))\?/g;
   var namedParam    = /(\(\?)?:\w+/g;
@@ -43,7 +39,6 @@
     return new RegExp('^' + command + '$', 'i');
   };
 
-  // This method receives an array of callbacks to iterate over, and invokes each of them
   var invokeCallbacks = function(callbacks) {
     callbacks.forEach(function(callback) {
       callback.callback.apply(callback.context);
@@ -63,33 +58,22 @@
   root.voz = {
     init: function(commands, resetCommands) {
 
-      // resetCommands defaults to true
       if (resetCommands === undefined) {
         resetCommands = true;
       } else {
         resetCommands = !!resetCommands;
       }
 
-      // Abort previous instances of recognition already running
       if (recognition && recognition.abort) {
         recognition.abort();
       }
 
-      // initiate SpeechRecognition
       recognition = new SpeechRecognition();
-
-      // Set the max number of alternative transcripts to try and match with a command
-      recognition.maxAlternatives = 15;
-
-      // In HTTPS, turn off continuous mode for faster results.
-      // In HTTP,  turn on  continuous mode for much slower results, but no repeating security notices
+      recognition.maxAlternatives = 15; //Maximo de alternativas
       recognition.continuous = root.location.protocol === 'http:';
-
-      // Sets the language to the default 'pt-BR'. This can be changed with voz.setLanguage()
       recognition.lang = 'pt-BR';
 
       recognition.onstart   = function()      { invokeCallbacks(callbacks.start); };
-
       recognition.onerror   = function(event) {
         invokeCallbacks(callbacks.error);
         switch (event.error) {
@@ -98,9 +82,7 @@
           break;
         case 'not-allowed':
         case 'service-not-allowed':
-          // if permission to use the mic is denied, turn off auto-restart
           autoRestart = false;
-          // determine if permission was denied by user or automatically.
           if (new Date().getTime()-lastStartedAt < 200) {
             invokeCallbacks(callbacks.errorPermissionBlocked);
           } else {
@@ -112,9 +94,7 @@
 
       recognition.onend = function() {
         invokeCallbacks(callbacks.end);
-        // voz will auto restart if it is closed automatically and not by user action.
         if (autoRestart) {
-          // play nicely with the browser, and never restart voz automatically more than once per second
           var timeSinceLastStart = new Date().getTime()-lastStartedAt;
           if (timeSinceLastStart < 1000) {
             setTimeout(root.voz.start, 1000-timeSinceLastStart);
@@ -128,9 +108,7 @@
         invokeCallbacks(callbacks.result);
         var results = event.results[event.resultIndex];
         var commandText;
-        // go over each of the 5 results and alternative results received (we've set maxAlternatives to 5 above)
-        for (var i = 0; i<results.length; i++) {
-          // the text recognized
+        for (var i = 0; i< results.length; i++) { // Comandos Retornados
           commandText = results[i].transcript.trim();
           if (debugState) {
             root.console.log('Frase Reconhecida: %c'+commandText, debugStyle);
@@ -158,7 +136,6 @@
         return false;
       };
 
-      // build commands list
       if (resetCommands) {
         commandsList = [];
       }
@@ -211,7 +188,6 @@
           if (typeof cb !== 'function') {
             continue;
           }
-          //convert command to regex
           command = commandToRegExp(phrase);
 
           commandsList.push({ command: command, callback: cb, originalPhrase: phrase });
@@ -239,25 +215,6 @@
       });
     },
 
-    /**
-     * Add a callback function to be called in case one of the following events happens:
-     *
-     * start, error, end, result, resultMatch, resultNoMatch, errorNetwork, errorPermissionBlocked, errorPermissionDenied.
-     *
-     * ### Examples:
-     *
-     *     voz.addCallback('error', function () {
-     *       $('.myErrorText').text('There was an error!');
-     *     });
-     *
-     *     // pass local context to a global function called notConnected
-     *     voz.addCallback('errorNetwork', notConnected, this);
-     *
-     * @param {String} type - Name of event that will trigger this callback
-     * @param {Function} callback - The function to call when event is triggered
-     * @param {Object} [context] - Optional context for the callback function
-     * @method addCallback
-     */
     addCallback: function(type, callback, context) {
       if (callbacks[type]  === undefined) {
         return;

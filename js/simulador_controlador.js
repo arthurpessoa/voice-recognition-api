@@ -1,6 +1,5 @@
 /*
-*
-*
+* Controlador
 */
 
 if (voz) {
@@ -14,9 +13,6 @@ if (voz) {
     'posição 1': function() {
       robot.move(100,100);
     },
-    'posição 2': function() {
-      robot.move(300,500); 
-    },
     'Desligar': function() {
       voz.abort();
       open(location, '_self').close();
@@ -24,9 +20,15 @@ if (voz) {
 
   };
 
-  // Add our commands to voz
-  voz.addCommands(commands);
+  	// Add our commands to voz
+	 voz.addCommands(commands);
 
-  // Start listening.
-  voz.start();
+  	// Start listening.
+  	voz.start();
+
+	window.onbeforeunload = function (event) {
+	    voz.abort();
+	};
+
+
 }
