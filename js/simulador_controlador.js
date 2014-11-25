@@ -10,12 +10,12 @@ if (voz) {
 
   // Definir os comandos
   var commands = {
-    'posição 1': function() {
-      robot.move(100,100);
+    '(robô) (mova) (para) (a) posição :x(X) :y(Y) ': function(x,y) {
+      robot.move(x,y);
     },
     'Desligar': function() {
       voz.abort();
-      open(location, '_self').close();
+      
     }
 
   };
